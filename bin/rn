@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# Creacion de la carpeta .my_rns 
+Dir.mkdir("#{Dir.home}/.my_rns") if not File.exist?("#{Dir.home}/.my_rns")
+Dir.mkdir("#{Dir.home}/.my_rns/global") if not File.exist?("#{Dir.home}/.my_rns/global")
+
 # Setup mandatorio de Bundler
 require 'bundler/setup'
 
