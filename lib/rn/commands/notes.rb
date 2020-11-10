@@ -30,7 +30,6 @@ module RN
           else
             puts "El directorio ingresado no existe"
           end
-          warn "TODO: Implementar creación de la nota con título '#{title}' (en el libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -59,7 +58,6 @@ module RN
           else
             puts "El directorio ingresado no existe"
           end
-          warn "TODO: Implementar borrado de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -85,11 +83,11 @@ module RN
               puts "La nota ingresada no existe en este directorio: #{Dir.home}/.my_rns/#{book}/"
             else
               TTY::Editor.open("#{Dir.home}/.my_rns/#{book}/#{title}.rn")
+              puts "Los cambios se guardaron correctamente"
             end
           else
             puts "El directorio ingresado no existe"
           end
-          warn "TODO: Implementar modificación de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -108,7 +106,6 @@ module RN
 
         def call(old_title:, new_title:, **options)
           book = options[:book]
-          puts book
           book = "global" if not book
           if Dir.exist?("#{Dir.home}/.my_rns/#{book}/") && File.exist?("#{Dir.home}/.my_rns/#{book}/#{old_title}.rn")
             if File.exist?("#{Dir.home}/.my_rns/#{book}/#{new_title}.rn")
@@ -117,13 +114,13 @@ module RN
               if new_title['/'] or new_title['\\']
                 puts "El nuevo nombre tiene caracteres invalidos -> / \\"
               else
-                File.rename("#{Dir.home}/.my_rns/#{book}/#{old_title}.rn", "#{Dir.home}/.my_rns/#{book}/#{new_title}.rn")        
+                File.rename("#{Dir.home}/.my_rns/#{book}/#{old_title}.rn", "#{Dir.home}/.my_rns/#{book}/#{new_title}.rn")
+                puts "El nombre de la nota se actualizó correctamente"
               end
             end
           else
             puts "El directorio o la nota no existe"
           end
-          warn "TODO: Implementar cambio del título de la nota con título '#{old_title}' hacia '#{new_title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -148,12 +145,15 @@ module RN
             Dir.each_child("#{Dir.home}/.my_rns/") {|c| Dir.new("#{Dir.home}/.my_rns/#{c}").each_child { |n| puts n }}
           else
             if Dir.exist?("#{Dir.home}/.my_rns/#{book}/")
-              Dir.each_child("#{Dir.home}/.my_rns/#{book}") { |n| puts n }              
+              if Dir.empty?("#{Dir.home}/.my_rns/#{book}/")
+                puts "La carpeta está vacía"
+              else
+                Dir.each_child("#{Dir.home}/.my_rns/#{book}") { |n| puts n }
+              end
             else
-              puts "El directorio ingresado no existe"
+              puts "El nombre de carpeta ingresado no existe"
             end
           end
-          warn "TODO: Implementar listado de las notas del libro '#{book}' (global=#{global}).\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -176,12 +176,12 @@ module RN
             if not File.exist?("#{Dir.home}/.my_rns/#{book}/#{title}.rn")
               puts "La nota ingresada no existe en este directorio: #{Dir.home}/.my_rns/#{book}/"
             else
-              puts File.read("#{Dir.home}/.my_rns/#{book}/#{title}.rn"), :magenta              
+              puts File.read("#{Dir.home}/.my_rns/#{book}/#{title}.rn"), :magenta
+              puts "La nota está vacía" if File.zero?("#{Dir.home}/.my_rns/#{book}/#{title}.rn")
             end
           else
             puts "El directorio ingresado no existe"
           end
-          warn "TODO: Implementar vista de la nota con título '#{title}' (del libro '#{book}').\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
     end

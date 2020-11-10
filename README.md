@@ -1,111 +1,90 @@
-# rn
+# Organizador de notas
 
-Plantilla para comenzar con el Trabajo Práctico Integrador de la cursada 2020 de la materia
-Taller de Tecnologías de Producción de Software - Opción Ruby, de la Facultad de Informática
-de la Universidad Nacional de La Plata.
+Aplicación para llevar registro de notas organizadas de manera que permite acceder facilmente a la información que dichas notas contienen.
 
-Ruby Notes, o simplemente `rn`, es un gestor de notas concebido como un clon simplificado
-de la excelente herramienta [TomBoy](https://wiki.gnome.org/Apps/Tomboy).
+## Funcionalidad
 
-Este proyecto es simplemente una plantilla para comenzar a implementar la herramienta e
-intenta proveer un punto de partida para el desarrollo, simplificando el _bootstrap_ del
-proyecto que puede ser una tarea que consume mucho tiempo y conlleva la toma de algunas
-decisiones que pueden tener efectos tanto positivos como negativos en el proyecto.
+Esta herramienta organizará las notas en cuadernos representados por directorios, los cuales podran ser creados y elegidos para almacenar las notas, en caso de no especificar ningun cuaderno para una nota ésta se guardara en el cuaderno 'global' que se crea al ejecutar la app, junto con la carpeta '.my_rns', contenedora de todos los cuadernos (en caso de estar creadas no se vuelven a crear).
 
-## Uso de `rn`
+### Notas
 
-Para ejecutar el comando principal de la herramienta se utiliza el script `bin/rn`, el cual
-puede correrse de las siguientes manera:
-
+Para acceder a las opciones que ofrece nuestra app para las notas se debe enviar el parametro 'notes' al ejecutar la aplicación:
 ```bash
-$ ruby bin/rn [args]
+$ ruby bin/rn notes
 ```
+Luego se deberá enviar el siguiente parámetro para especificar qué se quiere hacer con la nota.
+Comandos para gestionar las notas:
 
-O bien:
+  * ### Crear
+    ```bash
+    $ ruby bin/rn notes create una_nota --book un_cuaderno
+    ```
+    Esto indica que se quiere crear una nota de nombre 'una_nota' y usando la opción '--book' se indica con el nombre 'un_cuaderno' que se quiere guardar la nota en ese directorio.
+    En caso de no especificar ninguna opción la nota se guardará en el cuaderno 'global'
 
+  * #### Eliminar
+    ```bash
+    $ ruby bin/rn notes delete una_nota --book un_cuaderno
+    ```
+
+  * #### Editar
+    ```bash
+    $ ruby bin/rn notes edit una_nota --book un_cuaderno
+    ```
+    Este comando abrirá un editor de texto en consola para modificar la nota y guardar cambios
+
+  * #### Renombrar
+    ```bash
+    $ ruby bin/rn notes retitle un_nombre_viejo un_nombre_nuevo --book un_cuaderno
+    ```
+    Con esto se modificará el nombre de la nota 'un_nombre_viejo' a 'un_nombre_nuevo' del cuaderno 'un_cuaderno', en caso de no indicar un directorio se buscará la nota en la carpeta 'global'
+
+  * #### Listar
+    ```bash
+    $ ruby bin/rn notes list --book un_cuaderno
+    ```
+    Esta linea listará todas las notas ubicadas en la carpeta 'un_cuaderno', en este caso se le envía a la opcion --book el argumento 'un_cuaderno', si se utiliza la opcion --global se listarán todas las notas almacenadas en la carpeta 'global' (esta opción no necesita ningún argumento), si no se elije ninguna opción se listarán todas las notas de todos los cuadernos.
+
+  * #### Mostrar
+    ```bash
+    $ ruby bin/rn notes show una_nota --book un_cuaderno
+    ```
+    Con este comando se mostrará en consola el contenido de la nota.
+
+### Cuadernos
+
+Para acceder a las opciones que ofrece nuestra app para los cuadernos se debe enviar el parametro 'books' al ejecutar la aplicación:
 ```bash
-$ bundle exec bin/rn [args]
+$ ruby bin/rn books
 ```
+Luego se deberá enviar el siguiente parámetro para especificar qué se quiere hacer con el cuaderno.
+Comandos para gestionar cuadernos:
 
-O simplemente:
+  * #### Crear
+    ```bash
+    $ ruby bin/rn books create un_cuaderno
+    ```
+    Esto creará un nuevo directorio llamado 'un_cuaderno' en la carpeta '.my_rns'
 
-```bash
-$ bin/rn [args]
-```
+  * #### Eliminar
+    ```bash
+    $ ruby bin/rn delete un_cuaderno
+    ```
+    Usando este comando se eliminará la carpeta llamada 'un_cuaderno', en caso de no estar vacío se eliminan tambien sus notas, si se usa la opción --global se eliminan solo las notas de esta carpeta.
 
-Si se agrega el directorio `bin/` del proyecto a la variable de ambiente `PATH` de la shell,
-el comando puede utilizarse sin prefijar `bin/`:
+  * #### Listar
+    ```bash
+    $ ruby bin/rn list
+    ```
+    Este comando lista todos los cuadernos
 
-```bash
-# Esto debe ejecutarse estando ubicad@ en el directorio raiz del proyecto, una única vez
-# por sesión de la shell
-$ export PATH="$(pwd)/bin:$PATH"
-$ rn [args]
-```
+  * #### Renombrar
+    ```bash
+    $ ruby bin/rn rename titulo_viejo titulo_nuevo
+    ```
+    Con este comando se renombra el cuaderno de nombre 'titulo_viejo' a 'titulo_nuevo'
 
-> Notá que para la ejecución de la herramienta, es necesario tener una versión reciente de
-> Ruby (2.5 o posterior) y tener instaladas sus dependencias, las cuales se manejan con
-> Bundler. Para más información sobre la instalación de las dependencias, consultar la
-> siguiente sección ("Desarrollo").
 
-Documentar el uso para usuarios finales de la herramienta queda fuera del alcance de esta
-plantilla y **se deja como una tarea para que realices en tu entrega**, pisando el contenido
-de este archivo `README.md` o bien en uno nuevo. Ese archivo deberá contener cualquier
-documentación necesaria para entender el funcionamiento y uso de la herramienta que hayas
-implementado, junto con cualquier decisión de diseño del modelo de datos que consideres
-necesario documentar.
+### Consideraciones generales a notas y cuadernos
 
-## Desarrollo
-
-Esta sección provee algunos tips para el desarrollo de tu entrega a partir de esta
-plantilla.
-
-### Instalación de dependencias
-
-Este proyecto utiliza Bundler para manejar sus dependencias. Si aún no sabés qué es eso
-o cómo usarlo, no te preocupes: ¡lo vamos a ver en breve en la materia! Mientras tanto,
-todo lo que necesitás saber es que Bundler se encarga de instalar las dependencias ("gemas")
-que tu proyecto tenga declaradas en su archivo `Gemfile` al ejecutar el siguiente comando:
-
-```bash
-$ bundle install
-```
-
-> Nota: Bundler debería estar disponible en tu instalación de Ruby, pero si por algún
-> motivo al intentar ejecutar el comando `bundle` obtenés un error indicando que no se
-> encuentra el comando, podés instalarlo mediante el siguiente comando:
->
-> ```bash
-> $ gem install bundler
-> ```
-
-Una vez que la instalación de las dependencias sea exitosa (esto deberías hacerlo solamente
-cuando estés comenzando con la utilización del proyecto), podés comenzar a probar la
-herramienta y a desarrollar tu entrega.
-
-### Estructura de la plantilla
-
-El proyecto te provee una estructura inicial en la cual podés basarte para implementar tu
-entrega. Esta estructura no es necesariamente rígida, pero tené en cuenta que modificarla
-puede requerir algún trabajo adicional de tu parte.
-
-* `lib/`: directorio que contiene todas las clases del modelo y de soporte para la ejecución
-  del programa `bin/rn`.
-  * `lib/rn.rb` es la declaración del namespace `RN`, y las directivas de carga de clases
-    o módulos que estén contenidos directamente por éste (`autoload`).
-  * `lib/rn/` es el directorio que representa el namespace `RN`. Notá la convención de que
-    el uso de un módulo como namespace se refleja en la estructura de archivos del proyecto
-    como un directorio con el mismo nombre que el archivo `.rb` que define el módulo, pero
-    sin la terminación `.rb`. Dentro de este directorio se ubicarán los elementos del
-    proyecto que estén bajo el namespace `RN` - que, también por convención y para facilitar
-    la organización, deberían ser todos. Es en este directorio donde deberías ubicar tus
-    clases de modelo, módulos, clases de soporte, etc. Tené en cuenta que para que todo
-    funcione correctamente, seguramente debas agregar nuevas directivas de carga en la
-    definición del namespace `RN` (o dónde corresponda, según tus decisiones de diseño).
-  * `lib/rn/commands.rb` y `lib/rn/commands/*.rb` son las definiciones de comandos de
-    `dry-cli` que se utilizarán. En estos archivos es donde comenzarás a realizar la
-    implementación de las operaciones en sí, que en esta plantilla están provistas como
-    simples disparadores.
-  * `lib/rn/version.rb` define la versión de la herramienta, utilizando [SemVer](https://semver.org/lang/es/).
-* `bin/`: directorio donde reside cualquier archivo ejecutable, siendo el más notorio `rn`
-  que se utiliza como punto de entrada para el uso de la herramienta.
+Para cada comando se verificará que los directorios y/o las notas existan, por esto de no ser asi se dará una advertencia
