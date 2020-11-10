@@ -41,7 +41,7 @@ module RN
         def call(name: nil, **options)
           global = options[:global]
           name = "global" if global
-            if Dir.exists?("#{Dir.home}/.my_rns/#{name}/")
+            if Dir.exist?("#{Dir.home}/.my_rns/#{name}/")
               if not Dir.empty?("#{Dir.home}/.my_rns/#{name}/")
                 Dir.each_child("#{Dir.home}/.my_rns/#{name}/") {|f| File.delete("#{Dir.home}/.my_rns/#{name}/#{f}")}  
               end
@@ -80,7 +80,7 @@ module RN
         ]
 
         def call(old_name:, new_name:, **)
-          if Dir.exists?("#{Dir.home}/.my_rns/#{old_name}/")
+          if Dir.exist?("#{Dir.home}/.my_rns/#{old_name}/")
             if new_name['/'] or new_name['\\']
               puts "El nuevo nombre tiene caracteres invalidos -> / \\"
             else
