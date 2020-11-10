@@ -45,7 +45,8 @@ module RN
               if not Dir.empty?("#{Dir.home}/.my_rns/#{name}/")
                 Dir.each_child("#{Dir.home}/.my_rns/#{name}/") {|f| File.delete("#{Dir.home}/.my_rns/#{name}/#{f}")}  
               end
-              Dir.rmdir("#{Dir.home}/.my_rns/#{name}/")
+              Dir.rmdir("#{Dir.home}/.my_rns/#{name}/") if not global
+              puts "El cuaderno se eliminó correctamente"
             else
               puts "El directorio no existe"
             end
@@ -81,8 +82,8 @@ module RN
 
         def call(old_name:, new_name:, **)
           if Dir.exist?("#{Dir.home}/.my_rns/#{old_name}/")
-            if new_name['/'] or new_name['\\']
-              puts "El nuevo nombre tiene caracteres invalidos -> / \\"
+            if new_name['/'] or new_name['\\'] or new_name[' ']
+              puts "El nuevo nombre tiene caracteres invalidos -> '/' '\\' ' '"
             else
               File.rename("#{Dir.home}/.my_rns/#{old_name}", "#{Dir.home}/.my_rns/#{new_name}")        
             end    
