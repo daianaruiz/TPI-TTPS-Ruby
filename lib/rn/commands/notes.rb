@@ -1,4 +1,5 @@
 module RN
+  require 'rn/models.rb'
   module Commands
     module Notes
       class Create < Dry::CLI::Command
@@ -16,19 +17,20 @@ module RN
         def call(title:, **options)
           book = options[:book]
           book = "global" if not book
-          if Dir.exist?("#{Dir.home}/.my_rns/#{book}")
-            if File.exist?("#{Dir.home}/.my_rns/#{book}/#{title}.rn") 
-              puts "No se puede crear la nota porque el nombre ya existe"
+          if Models::Book.dir_exist?(book)
+            if Models::Note.note_exist?(title, book) 
+              puts "No se puede crear la nota porque el nombre ya existe", :red
             else
-              if title['/'] or title[' '] or title['\\'] 
-                puts "El nuevo nombre tiene caracteres invalidos -> '/' '\\' ' ' "
+              if not Models::Note.valid_name?(title) 
+                puts "El nuevo nombre tiene caracteres invalidos -> '/' '\\' ' ' ", :yellow
               else
-                File.new("#{Dir.home}/.my_rns/#{book}/#{title}.rn", "w")  
-                puts "La nota ha sido creada en #{Dir.home}/.my_rns/#{book}/"     
+                newNote = Models::Note.new(title, book)
+                newNote.create()
+                puts "La nota ha sido creada en #{newNote.dir_path}/", :green
               end
             end
           else
-            puts "El directorio ingresado no existe"
+            puts "El directorio ingresado no existe", :red
           end
         end
       end
@@ -48,15 +50,16 @@ module RN
         def call(title:, **options)
           book = options[:book]
           book = "global" if not book
-          if Dir.exist?("#{Dir.home}/.my_rns/#{book}/")
-            if not File.exist?("#{Dir.home}/.my_rns/#{book}/#{title}.rn")
-              puts "La nota ingresada no existe en este directorio: #{Dir.home}/.my_rns/#{book}/"
+          if Models::Book.dir_exist?(book)
+            if not Models::Note.note_exist?(title, book)
+              puts "La nota ingresada no existe en este directorio: #{Dir.home}/.my_rns/#{book}/", :red
             else
-              File.delete("#{Dir.home}/.my_rns/#{book}/#{title}.rn")
-              puts "La nota fue borrada con éxito"
+              newNote = Models::Note.new(title, book)
+              newNote.delete()
+              puts "La nota fue borrada con éxito", :green
             end
           else
-            puts "El directorio ingresado no existe"
+            puts "El directorio ingresado no existe", :red
           end
         end
       end
@@ -78,15 +81,16 @@ module RN
         def call(title:, **options)
           book = options[:book]
           book = "global" if not book
-          if Dir.exist?("#{Dir.home}/.my_rns/#{book}/")
-            if not File.exist?("#{Dir.home}/.my_rns/#{book}/#{title}.rn")
-              puts "La nota ingresada no existe en este directorio: #{Dir.home}/.my_rns/#{book}/"
+          if Models::Book.dir_exist?(book)
+            if not Models::Note.note_exist?(title, book)
+              puts "La nota ingresada no existe en este directorio: #{Dir.home}/.my_rns/#{book}/", :red
             else
-              TTY::Editor.open("#{Dir.home}/.my_rns/#{book}/#{title}.rn")
-              puts "Los cambios se guardaron correctamente"
+              newNote = Models::Note.new(title, book)
+              newNote.edit
+              puts "Los cambios se guardaron correctamente", :green
             end
           else
-            puts "El directorio ingresado no existe"
+            puts "El directorio ingresado no existe", :red
           end
         end
       end
@@ -107,19 +111,20 @@ module RN
         def call(old_title:, new_title:, **options)
           book = options[:book]
           book = "global" if not book
-          if Dir.exist?("#{Dir.home}/.my_rns/#{book}/") && File.exist?("#{Dir.home}/.my_rns/#{book}/#{old_title}.rn")
-            if File.exist?("#{Dir.home}/.my_rns/#{book}/#{new_title}.rn")
-              puts "Ya existe una nota con ese nombre"
+          if Models::Book.dir_exist?(book) && Models::Note.note_exist?(old_title, book)
+            if Models::Note.note_exist?(new_title, book)
+              puts "Ya existe una nota con ese nombre", :red
             else
-              if new_title['/'] or new_title['\\']
-                puts "El nuevo nombre tiene caracteres invalidos -> / \\"
+              if Models::Note.valid_name?(new_title)
+                newNote = Models::Note.new(old_title, book)
+                newNote.rename(new_title)
+                puts "El nombre de la nota se actualizó correctamente", :green
               else
-                File.rename("#{Dir.home}/.my_rns/#{book}/#{old_title}.rn", "#{Dir.home}/.my_rns/#{book}/#{new_title}.rn")
-                puts "El nombre de la nota se actualizó correctamente"
+                puts "El nuevo nombre tiene caracteres invalidos -> / \\", :yellow
               end
             end
           else
-            puts "El directorio o la nota no existe"
+            puts "El directorio o la nota no existe", :red
           end
         end
       end
@@ -142,16 +147,16 @@ module RN
           global = options[:global]
           book = "global" if global
           if not book
-            Dir.each_child("#{Dir.home}/.my_rns/") {|c| Dir.new("#{Dir.home}/.my_rns/#{c}").each_child { |n| puts n }}
+            Models::Note.list.each {|n| puts "nota: #{n.title} cuaderno: #{n.book} "}
           else
-            if Dir.exist?("#{Dir.home}/.my_rns/#{book}/")
-              if Dir.empty?("#{Dir.home}/.my_rns/#{book}/")
-                puts "La carpeta está vacía"
+            if Models::Book.dir_exist?(book)
+              if Models::Book.dir_empty?(book)
+                puts "La carpeta está vacía", :yellow
               else
-                Dir.each_child("#{Dir.home}/.my_rns/#{book}") { |n| puts n }
+                Models::Note.list_of(book).each {|n| puts n.title}
               end
             else
-              puts "El nombre de carpeta ingresado no existe"
+              puts "El nombre de carpeta ingresado no existe", :red
             end
           end
         end
@@ -172,18 +177,55 @@ module RN
         def call(title:, **options)
           book = options[:book]
           book = "global" if not book
-          if Dir.exist?("#{Dir.home}/.my_rns/#{book}/")
-            if not File.exist?("#{Dir.home}/.my_rns/#{book}/#{title}.rn")
-              puts "La nota ingresada no existe en este directorio: #{Dir.home}/.my_rns/#{book}/"
+          if Models::Book.dir_exist?(book)
+            if not Models::Note.note_exist?(title, book)
+              puts "La nota ingresada no existe en este directorio: #{Dir.home}/.my_rns/#{book}/", :red
             else
-              puts File.read("#{Dir.home}/.my_rns/#{book}/#{title}.rn"), :magenta
-              puts "La nota está vacía" if File.zero?("#{Dir.home}/.my_rns/#{book}/#{title}.rn")
+              newNote = Models::Note.new(title, book)
+              newNote.show
+              puts "La nota está vacía" if newNote.note_empty
             end
           else
-            puts "El directorio ingresado no existe"
+            puts "El directorio ingresado no existe", :red
           end
         end
       end
+
+      class ConvertHTML < Dry::CLI::Command
+        require 'commonmarker'
+
+        desc 'Convert markdown to HTML'
+        argument :title, required: false, desc: 'Title of the note'
+        option :book, type: :string, desc: 'Book'
+        option :global, type: :boolean, default: false, desc: 'List only notes from the global book'
+
+        def call(title:nil, **options)
+          book = options[:book]
+          book = 'global' if options[:global]
+          if title && book
+            if (Models::Book.dir_exist?(book))
+              newNote = Models::Note.new(title, book)
+              newNote.convert
+            else
+              puts "La nota o el directorio no existe", :red
+            end
+          else
+            if(book)
+              Models::Note.list_of(book).each do |n|
+                n.convert
+              end
+              puts "Las notas del cuaderno #{Dir.home}/.my_rns/#{book} se convirtieron correctamente", :green
+            else
+              Models::Note.list.each do |n|
+                n.convert
+              end
+              puts "Las notas de todos los cuadernos se convirtieron correctamente"
+            end
+          end
+        end
+
+      end
+
     end
   end
 end

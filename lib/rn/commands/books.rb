@@ -1,4 +1,5 @@
 module RN
+  require 'rn/models.rb'
   module Commands
     module Books
       class Create < Dry::CLI::Command
@@ -12,16 +13,17 @@ module RN
         ]
 
         def call(name:, **)
-          if Dir.exist?("#{Dir.home}/.my_rns/#{name}/")
+          if Models::Book.dir_exist?(name)
             puts "No se puede crear el cuaderno porque el nombre ya existe"
           else
-            if name['/'] or name['\\']
-              puts "El nuevo nombre tiene caracteres invalidos -> / \\"
-            else
-              Dir.mkdir("#{Dir.home}/.my_rns/#{name}/")
+            if Models::Book.valid_name?(name)
+              newBook = Models::Book.new (name)
+              newBook.create()
               puts "El cuaderno se creó correctamente en #{Dir.home}/.my_rns/"
+            else
+              puts "El nuevo nombre tiene caracteres invalidos -> '/' '\\' ' '"
             end
-          end          
+          end
         end
       end
 
@@ -41,18 +43,16 @@ module RN
           global = options[:global]
           name = "global" if global
           if name
-            if Dir.exist?("#{Dir.home}/.my_rns/#{name}/")
-              if not Dir.empty?("#{Dir.home}/.my_rns/#{name}/")
-                Dir.each_child("#{Dir.home}/.my_rns/#{name}/") {|f| File.delete("#{Dir.home}/.my_rns/#{name}/#{f}")}  
-              end
-              if not global
-                Dir.rmdir("#{Dir.home}/.my_rns/#{name}/") 
-                puts "El cuaderno se eliminó correctamente"
-              else
-                puts "Las notas de global se eliminaron correctamente"
-              end
-            else
+            if not Models::Book.dir_exist?(name)
               puts "El directorio no existe"
+            else
+              newBook = Models::Book.new(name)
+              newBook.delete(global)
+              if global
+                puts "Las notas de global se eliminaron correctamente"
+              else
+                puts "El cuaderno se eliminó correctamente"
+              end
             end
           else
             puts "Se debe proveer un nombre de cuaderno"
@@ -68,11 +68,7 @@ module RN
         ]
 
         def call(*)
-          if Dir.empty?("#{Dir.home}/.my_rns/")
-            puts "No hay cuadernos para mostrar"
-          else
-            Dir.each_child("#{Dir.home}/.my_rns/") {|f| puts f}
-          end
+          (Models::Book.list).each {|book| puts book.name}
         end
       end
 
@@ -89,15 +85,20 @@ module RN
         ]
 
         def call(old_name:, new_name:, **)
-          if Dir.exist?("#{Dir.home}/.my_rns/#{old_name}/")
-            if new_name['/'] or new_name['\\'] or new_name[' ']
-              puts "El nuevo nombre tiene caracteres invalidos -> '/' '\\' ' '"
-            else
-              File.rename("#{Dir.home}/.my_rns/#{old_name}", "#{Dir.home}/.my_rns/#{new_name}")       
-              puts "El cuaderno se renombró correctamente" 
-            end    
-          else
+          if not Models::Book.dir_exist?(old_name)
             puts "El directorio no existe"
+          else
+            if Models::Book.dir_exist?(new_name)
+              puts "El nombre de directorio ya existe"
+            else
+              if Models::Book.valid_name?(new_name)
+                newBook = Models::Book.new(old_name)
+                newBook.rename(new_name, old_name)
+                puts "El cuaderno se renombró correctamente"
+              else
+                puts "El nuevo nombre tiene caracteres invalidos -> '/' '\\' ' '"
+              end
+            end
           end
         end
       end

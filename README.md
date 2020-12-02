@@ -14,8 +14,28 @@ $ ruby bin/rn notes
 ```
 Luego se deberá enviar el siguiente parámetro para especificar qué se quiere hacer con la nota.
 Comandos para gestionar las notas:
+  
+  * #### Convertir a HTML
+    ```bash
+    $ ruby bin/rn notes convert una_nota --book un_cuaderno
+    ```
+    Con este comando se convertirá 'una_nota' de 'un_cuaderno' a un documento .html
+    ```bash
+    
+    $ ruby bin/rn notes convert --book un_cuaderno
+    ```
+    ```bash
+    $ ruby bin/rn notes convert --global
+    ```
+    Usando estos comandos (por separado) se convertirán a .html todas las notas almacenadas, ya sea, en 'un_cuaderno' o en 'global'
 
-  * ### Crear
+    ```bash
+    $ ruby bin/rn notes convert
+    ```
+    Este comando permite convertir todas las notas de todos los cuadernos almacenados en el cajón de notas.
+    En todos los casos los nuevos archivos .html quedarán almacenados en la misma carpeta en la que estaba la nota original. Todas las notas deben respetar el formato Markdown, aunque manteniendo la extension .rn.
+
+  * #### Crear
     ```bash
     $ ruby bin/rn notes create una_nota --book un_cuaderno
     ```
@@ -50,6 +70,7 @@ Comandos para gestionar las notas:
     $ ruby bin/rn notes show una_nota --book un_cuaderno
     ```
     Con este comando se mostrará en consola el contenido de la nota.
+
 
 ### Cuadernos
 
