@@ -1,0 +1,82 @@
+<h1>Organizador de notas</h1>
+<p>Aplicación para llevar registro de notas organizadas de manera que permite acceder facilmente a la información que dichas notas contienen.</p>
+<h2>Funcionalidad</h2>
+<p>Esta herramienta organizará las notas en cuadernos representados por directorios, los cuales podran ser creados y elegidos para almacenar las notas, en caso de no especificar ningun cuaderno para una nota ésta se guardara en el cuaderno 'global' que se crea al ejecutar la app, junto con la carpeta '.my_rns', contenedora de todos los cuadernos (en caso de estar creadas no se vuelven a crear).</p>
+<h3>Notas</h3>
+<p>Para acceder a las opciones que ofrece nuestra app para las notas se debe enviar el parametro 'notes' al ejecutar la aplicación:</p>
+<pre><code class="language-bash">$ ruby bin/rn notes
+</code></pre>
+<p>Luego se deberá enviar el siguiente parámetro para especificar qué se quiere hacer con la nota.
+Comandos para gestionar las notas:</p>
+<ul>
+<li>
+<h3>Crear</h3>
+<pre><code class="language-bash">$ ruby bin/rn notes create una_nota --book un_cuaderno
+</code></pre>
+<p>Esto indica que se quiere crear una nota de nombre 'una_nota' y usando la opción '--book' se indica con el nombre 'un_cuaderno' que se quiere guardar la nota en ese directorio.
+En caso de no especificar ninguna opción la nota se guardará en el cuaderno 'global'</p>
+</li>
+<li>
+<h4>Eliminar</h4>
+<pre><code class="language-bash">$ ruby bin/rn notes delete una_nota --book un_cuaderno
+</code></pre>
+</li>
+<li>
+<h4>Editar</h4>
+<pre><code class="language-bash">$ ruby bin/rn notes edit una_nota --book un_cuaderno
+</code></pre>
+<p>Este comando abrirá un editor de texto en consola para modificar la nota y guardar cambios</p>
+</li>
+<li>
+<h4>Renombrar</h4>
+<pre><code class="language-bash">$ ruby bin/rn notes retitle un_nombre_viejo un_nombre_nuevo --book un_cuaderno
+</code></pre>
+<p>Con esto se modificará el nombre de la nota 'un_nombre_viejo' a 'un_nombre_nuevo' del cuaderno 'un_cuaderno', en caso de no indicar un directorio se buscará la nota en la carpeta 'global'</p>
+</li>
+<li>
+<h4>Listar</h4>
+<pre><code class="language-bash">$ ruby bin/rn notes list --book un_cuaderno
+</code></pre>
+<p>Esta linea listará todas las notas ubicadas en la carpeta 'un_cuaderno', en este caso se le envía a la opcion --book el argumento 'un_cuaderno', si se utiliza la opcion --global se listarán todas las notas almacenadas en la carpeta 'global' (esta opción no necesita ningún argumento), si no se elije ninguna opción se listarán todas las notas de todos los cuadernos.</p>
+</li>
+<li>
+<h4>Mostrar</h4>
+<pre><code class="language-bash">$ ruby bin/rn notes show una_nota --book un_cuaderno
+</code></pre>
+<p>Con este comando se mostrará en consola el contenido de la nota.</p>
+</li>
+</ul>
+<h3>Cuadernos</h3>
+<p>Para acceder a las opciones que ofrece nuestra app para los cuadernos se debe enviar el parametro 'books' al ejecutar la aplicación:</p>
+<pre><code class="language-bash">$ ruby bin/rn books
+</code></pre>
+<p>Luego se deberá enviar el siguiente parámetro para especificar qué se quiere hacer con el cuaderno.
+Comandos para gestionar cuadernos:</p>
+<ul>
+<li>
+<h4>Crear</h4>
+<pre><code class="language-bash">$ ruby bin/rn books create un_cuaderno
+</code></pre>
+<p>Esto creará un nuevo directorio llamado 'un_cuaderno' en la carpeta '.my_rns'</p>
+</li>
+<li>
+<h4>Eliminar</h4>
+<pre><code class="language-bash">$ ruby bin/rn delete un_cuaderno
+</code></pre>
+<p>Usando este comando se eliminará la carpeta llamada 'un_cuaderno', en caso de no estar vacío se eliminan tambien sus notas, si se usa la opción --global se eliminan solo las notas de esta carpeta.</p>
+</li>
+<li>
+<h4>Listar</h4>
+<pre><code class="language-bash">$ ruby bin/rn list
+</code></pre>
+<p>Este comando lista todos los cuadernos</p>
+</li>
+<li>
+<h4>Renombrar</h4>
+<pre><code class="language-bash">$ ruby bin/rn rename titulo_viejo titulo_nuevo
+</code></pre>
+<p>Con este comando se renombra el cuaderno de nombre 'titulo_viejo' a 'titulo_nuevo'</p>
+</li>
+</ul>
+<h3>Consideraciones generales a notas y cuadernos</h3>
+<p>Para cada comando se verificará que los directorios y/o las notas existan, por esto de no ser asi se dará una advertencia</p>
