@@ -9,15 +9,18 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-
+    
   </head>
 
   <body>
-    <% if current_user %>
-      <%= link_to 'Sign out', destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure?' } %>
+    <nav class="navbar justify-content-end shadow py-3 mb-5 bg-white rounded">
+      <% if current_user %>
+        <%= link_to 'Cerrar sesión', destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-secondary text-light m-3 float-right" %>
+      <% end %>
+    </nav>
+    <% flash.each do |name, msg| %>
+      <%= content_tag :section, msg, :id => "flash#{name}", :class => "alert alert-info flash" %>
     <% end %>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
     <%= yield %>
   </body>
 </html>

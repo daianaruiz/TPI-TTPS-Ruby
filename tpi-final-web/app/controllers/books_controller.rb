@@ -50,10 +50,17 @@ class BooksController < ApplicationController
 
   # DELETE /books/1 or /books/1.json
   def destroy
-    @book.destroy
-    respond_to do |format|
-      format.html { redirect_to books_url, notice: "Book was successfully destroyed." }
-      format.json { head :no_content }
+    if @book.is_global
+      Note.where(book_id: @book.id).delete_all
+      respond_to do |format|
+        format.html { redirect_to books_url, notice: "Las notas de global se borraron correctamente" }
+      end
+    else
+      @book.destroy
+      respond_to do |format|
+        format.html { redirect_to books_url, notice: "El cuaderno se borró correctamente" }
+        format.json { head :no_content }
+      end
     end
   end
 

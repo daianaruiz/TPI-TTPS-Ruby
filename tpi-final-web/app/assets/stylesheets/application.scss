@@ -13,3 +13,22 @@
  *= require_tree .
  *= require_self
  */
+ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import '@fortawesome/fontawesome-free/scss/regular';
+@import '@fortawesome/fontawesome-free/scss/brands';
+@import '@fortawesome/fontawesome-free/scss/v4-shims';
+
+.icon-style{
+    font-size: 6rem;
+    color: #83a8c8;
+}
+a:hover {
+    background: none;
+}
+.flex-props {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 0%;
+}

@@ -4,8 +4,14 @@ class NotesController < ApplicationController
 
   # GET /notes or /notes.json
   def index
-    @notes = Note.all
+    if params[:book_id] != 'global'
+      @notes = Note.where(book_id: params[:book_id])
+      @book = Book.find(params[:book_id])
+    else
+      @notes = Note.where(book_id: nil)
+    end
   end
+
 
   # GET /notes/1 or /notes/1.json
   def show

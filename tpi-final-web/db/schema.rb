@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 2021_02_01_181242) do
 
   create_table "books", charset: "utf8mb4", force: :cascade do |t|
     t.string "title", null: false
+    t.boolean "is_global", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
@@ -21,7 +22,7 @@ ActiveRecord::Schema.define(version: 2021_02_01_181242) do
   end
 
   create_table "notes", charset: "utf8mb4", force: :cascade do |t|
-    t.bigint "book_id"
+    t.bigint "book_id", null: false
     t.string "title", null: false
     t.text "content", null: false
     t.datetime "created_at", precision: 6, null: false

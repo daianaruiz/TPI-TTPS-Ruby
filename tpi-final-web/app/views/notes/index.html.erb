@@ -1,4 +1,11 @@
 <p id="notice"><%= notice %></p>
+<p>
+  <strong>Title:</strong>
+  <%= @book.title %>
+</p>
+<%= link_to 'Editar nombre', edit_book_path(@book) unless @book.is_global %>
+ 
+<%= link_to 'Back', books_path %>
 
 <h1>Notes</h1>
 
@@ -18,14 +25,14 @@
         <td><%= note.book_id %></td>
         <td><%= note.title %></td>
         <td><%= note.content %></td>
-        <td><%= link_to 'Show', note %></td>
-        <td><%= link_to 'Edit', edit_note_path(note) %></td>
-        <td><%= link_to 'Destroy', note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+        <td><%= link_to 'Show', book_note_url(@book, note) %></td>
+        <td><%= link_to 'Edit', edit_book_note_url(@book, note) %></td>
+        <td><%= link_to 'Destroy', book_note_url(@book, note), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr> 
     <% end %>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to 'New Note', new_note_path %>
+<%= link_to 'New Note', new_book_note_url %>
