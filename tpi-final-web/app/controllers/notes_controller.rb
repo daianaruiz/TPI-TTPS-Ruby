@@ -1,15 +1,11 @@
 class NotesController < ApplicationController
+  before_action :find_book
   before_action :set_note, only: %i[ show edit update destroy ]
   before_action :authenticate_user!
 
   # GET /notes or /notes.json
   def index
-    if params[:book_id] != 'global'
-      @notes = Note.where(book_id: params[:book_id])
-      @book = Book.find(params[:book_id])
-    else
-      @notes = Note.where(book_id: nil)
-    end
+    @notes = @book.notes
   end
 
 
@@ -19,7 +15,7 @@ class NotesController < ApplicationController
 
   # GET /notes/new
   def new
-    @note = Note.new
+    @note = @book.notes.build
   end
 
   # GET /notes/1/edit
@@ -28,45 +24,38 @@ class NotesController < ApplicationController
 
   # POST /notes or /notes.json
   def create
-    @note = Note.new(note_params)
-
-    respond_to do |format|
-      if @note.save
-        format.html { redirect_to @note, notice: "Note was successfully created." }
-        format.json { render :show, status: :created, location: @note }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @note.errors, status: :unprocessable_entity }
-      end
+    @note = @book.notes.build(note_params)
+    if @note.save
+      redirect_to book_notes_path(@book), notice: "La nota se creó correctamente."
+    else
+      render :new, status: :unprocessable_entity
     end
+
   end
 
   # PATCH/PUT /notes/1 or /notes/1.json
   def update
-    respond_to do |format|
-      if @note.update(note_params)
-        format.html { redirect_to @note, notice: "Note was successfully updated." }
-        format.json { render :show, status: :ok, location: @note }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @note.errors, status: :unprocessable_entity }
-      end
+    if @note.update(note_params)
+      redirect_to book_notes_path(@book), notice: "La nota se actualizó correctamente."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /notes/1 or /notes/1.json
   def destroy
     @note.destroy
-    respond_to do |format|
-      format.html { redirect_to notes_url, notice: "Note was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to book_notes_path(@book), notice: "La nota se borró correctamente."
+  end
+
+  def find_book
+    @book = Book.find(params[:book_id])
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_note
-      @note = Note.find(params[:id])
+      @note = @book.notes.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

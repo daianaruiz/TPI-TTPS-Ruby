@@ -1,19 +1,17 @@
 <p id="notice"><%= notice %></p>
+<h2 class="text-secondary ml-3">Título: <%= @note.title %></h2>
+<hr>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <h4 class="text-secondary ml-3 text-right">Contenido: </h4>
+    </div>
+    <div class="col-md-6">
+      <h6 class="text-secondary mt-1"> <%= @note.content %></h6>
+    </div>
+  </div>
+</div>
 
-<p>
-  <strong>Book:</strong>
-  <%= @note.book_id %>
-</p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @note.title %>
-</p>
-
-<p>
-  <strong>Content:</strong>
-  <%= @note.content %>
-</p>
-
-<%= link_to 'Edit', edit_note_path(@note) %> |
-<%= link_to 'Back', notes_path %>
+<hr>
+<%= link_to 'Editar nota', edit_book_note_path(@book, @note), class: "ml-3 text-light btn btn-info" %> <br>
+<%= link_to 'Volver', book_notes_path(@book), class: "ml-3 mt-3 text-light btn btn-secondary" %>

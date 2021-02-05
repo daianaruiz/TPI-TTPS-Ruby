@@ -5,9 +5,6 @@ Rails.application.routes.draw do
     collection do
       resources :books do
         resources :notes
-        collection do
-          get '/global', to: 'notes#index'
-        end
       end
     end
   end

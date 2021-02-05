@@ -1,6 +1,5 @@
-<h1>Editing Note</h1>
+<h1 class="text-secondary ml-3">Editar nota</h1>
 
-<%= render 'form', note: @note %>
+<%= render 'form' %>
 
-<%= link_to 'Show', @note %> |
-<%= link_to 'Back', notes_path %>
+<%= link_to 'Cancelar', book_notes_path(@book), class: "ml-3 text-light btn btn-secondary" %>
