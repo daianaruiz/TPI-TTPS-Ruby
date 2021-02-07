@@ -9,6 +9,7 @@ class BooksController < ApplicationController
 
   # GET /books/1 or /books/1.json
   def show
+    authorize @book
   end
 
   # GET /books/new
@@ -18,6 +19,7 @@ class BooksController < ApplicationController
 
   # GET /books/1/edit
   def edit
+    authorize @book
   end
 
   # POST /books or /books.json
@@ -37,6 +39,7 @@ class BooksController < ApplicationController
 
   # PATCH/PUT /books/1 or /books/1.json
   def update
+    authorize @book
     respond_to do |format|
       if @book.update(book_params)
         format.html { redirect_to @book, notice: "Book was successfully updated." }
