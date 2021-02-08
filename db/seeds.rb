@@ -16,10 +16,10 @@ book5 = Book.create(title: 'Cuaderno2 de 2', user: user2)
 nota1 = Note.create(title:'Nota1',book: book1, content: '# What is Lorem Ipsum?
     **Lorem Ipsum** is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
     ')
-nota2 = Note.create(title: 'Nota2', book: book1, content: '# Películas
-    ###Ironman
-    ###Avengers
-    ###Captain America')
+nota2 = Note.create(title: 'Nota2', book: book1, content: '# Peliculas
+    * Ironman
+* Avengers
+* Captain America')
 nota3 = Note.create(title: 'Nota1', book: book3, content: '* #### Convertir a HTML
     ```bash
     $ ruby bin/rn notes convert una_nota --book un_cuaderno
@@ -34,6 +34,6 @@ nota3 = Note.create(title: 'Nota1', book: book3, content: '* #### Convertir a HT
     ```
     Usando estos comandos (por separado) se convertirán a .html todas las notas almacenadas, ya sea, en *un_cuaderno* o en *global*')
 nota4 = Note.create(title: 'Nota1', book: book5, content: '## Lista de compras
-    ####pan
-    ####leche
-    ####huevos')
+    * pan
+    * leche
+    * huevos')
