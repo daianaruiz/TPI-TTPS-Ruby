@@ -7,11 +7,6 @@ class BooksController < ApplicationController
     @books = Book.where(user_id: current_user.id)
   end
 
-  # GET /books/1 or /books/1.json
-  def show
-    authorize @book
-  end
-
   # GET /books/new
   def new
     @book = Book.new
@@ -26,7 +21,7 @@ class BooksController < ApplicationController
   def create
     @book = Book.new(book_params)
     if @book.save
-      redirect_to @book, notice: "Book was successfully created."
+      redirect_to book_notes_path(@book), notice: "El cuaderno se creó correctamente."
     else
       render :new, status: :unprocessable_entity
     end
@@ -36,7 +31,7 @@ class BooksController < ApplicationController
   def update
     authorize @book
     if @book.update(book_params)
-      redirect_to @book, notice: "Book was successfully updated."
+      redirect_to book_notes_path(@book), notice: "El cuaderno se actualizó correctamente."
     else
       render :edit, status: :unprocessable_entity
     end

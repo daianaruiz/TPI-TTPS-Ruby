@@ -14,8 +14,13 @@
 
   <body>
     <nav class="navbar justify-content-end shadow py-3 mb-5 bg-white rounded">
+
       <% if current_user %>
-        <%= link_to 'Cerrar sesión', destroy_user_session_path, method: :delete, data: { confirm: '¿Desea cerrar sesión?' }, class: "btn btn-secondary text-light m-3 float-right" %>
+        <%= link_to root_url, class:'home-icon text-secondary' do %>
+          <i class='fas fa-home'></i>
+        <% end %>
+        <i class='fas fa-user m-2'></i>
+        <%= current_user.email %> <%= link_to 'Cerrar sesión', destroy_user_session_path, method: :delete, data: { confirm: '¿Desea cerrar sesión?' }, class: "btn btn-secondary text-light m-3 float-right" %>
       <% end %>
     </nav>
     <% flash.each do |name, msg| %>

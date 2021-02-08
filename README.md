@@ -1,111 +1,39 @@
-# Organizador de notas
+# Aplicación de notas
 
-Aplicación para llevar registro de notas organizadas de manera que permite acceder facilmente a la información que dichas notas contienen.
+#### Version de Ruby: 2.7.1
+#### Version de Rails: 6.1.1
 
-## Funcionalidad
-
-Esta herramienta organizará las notas en cuadernos representados por directorios, los cuales podran ser creados y elegidos para almacenar las notas, en caso de no especificar ningun cuaderno para una nota ésta se guardara en el cuaderno 'global' que se crea al ejecutar la app, junto con la carpeta '.my_rns', contenedora de todos los cuadernos (en caso de estar creadas no se vuelven a crear).
-
-### Notas
-
-Para acceder a las opciones que ofrece nuestra app para las notas se debe enviar el parametro 'notes' al ejecutar la aplicación:
+### Dependencias de sistema
+Es necesario ejecutar 
 ```bash
-$ ruby bin/rn notes
+bundle install
 ```
-Luego se deberá enviar el siguiente parámetro para especificar qué se quiere hacer con la nota.
-Comandos para gestionar las notas:
-  
-  * #### Convertir a HTML
-    ```bash
-    $ ruby bin/rn notes convert una_nota --book un_cuaderno
-    ```
-    Con este comando se convertirá 'una_nota' de 'un_cuaderno' a un documento .html
-    ```bash
-    
-    $ ruby bin/rn notes convert --book un_cuaderno
-    ```
-    ```bash
-    $ ruby bin/rn notes convert --global
-    ```
-    Usando estos comandos (por separado) se convertirán a .html todas las notas almacenadas, ya sea, en 'un_cuaderno' o en 'global'
-
-    ```bash
-    $ ruby bin/rn notes convert
-    ```
-    Este comando permite convertir todas las notas de todos los cuadernos almacenados en el cajón de notas.
-    En todos los casos los nuevos archivos .html quedarán almacenados en la misma carpeta en la que estaba la nota original. Todas las notas deben respetar el formato Markdown, aunque manteniendo la extension .rn.
-
-  * #### Crear
-    ```bash
-    $ ruby bin/rn notes create una_nota --book un_cuaderno
-    ```
-    Esto indica que se quiere crear una nota de nombre 'una_nota' y usando la opción '--book' se indica con el nombre 'un_cuaderno' que se quiere guardar la nota en ese directorio.
-    En caso de no especificar ninguna opción la nota se guardará en el cuaderno 'global'
-
-  * #### Eliminar
-    ```bash
-    $ ruby bin/rn notes delete una_nota --book un_cuaderno
-    ```
-
-  * #### Editar
-    ```bash
-    $ ruby bin/rn notes edit una_nota --book un_cuaderno
-    ```
-    Este comando abrirá un editor de texto en consola para modificar la nota y guardar cambios
-
-  * #### Renombrar
-    ```bash
-    $ ruby bin/rn notes retitle un_nombre_viejo un_nombre_nuevo --book un_cuaderno
-    ```
-    Con esto se modificará el nombre de la nota 'un_nombre_viejo' a 'un_nombre_nuevo' del cuaderno 'un_cuaderno', en caso de no indicar un directorio se buscará la nota en la carpeta 'global'
-
-  * #### Listar
-    ```bash
-    $ ruby bin/rn notes list --book un_cuaderno
-    ```
-    Esta linea listará todas las notas ubicadas en la carpeta 'un_cuaderno', en este caso se le envía a la opcion --book el argumento 'un_cuaderno', si se utiliza la opcion --global se listarán todas las notas almacenadas en la carpeta 'global' (esta opción no necesita ningún argumento), si no se elije ninguna opción se listarán todas las notas de todos los cuadernos.
-
-  * #### Mostrar
-    ```bash
-    $ ruby bin/rn notes show una_nota --book un_cuaderno
-    ```
-    Con este comando se mostrará en consola el contenido de la nota.
-
-
-### Cuadernos
-
-Para acceder a las opciones que ofrece nuestra app para los cuadernos se debe enviar el parametro 'books' al ejecutar la aplicación:
+o simplemente 
 ```bash
-$ ruby bin/rn books
+bundle 
 ```
-Luego se deberá enviar el siguiente parámetro para especificar qué se quiere hacer con el cuaderno.
-Comandos para gestionar cuadernos:
+para instalar las gemas especificadas en el archivo Gemfile
 
-  * #### Crear
-    ```bash
-    $ ruby bin/rn books create un_cuaderno
-    ```
-    Esto creará un nuevo directorio llamado 'un_cuaderno' en la carpeta '.my_rns'
+### Configuracion de la base de datos
+Para utilizar la aplicación es necesario disponer de MySQL instalado.
+La configuración de la base de datos se realiza a traves de variables de entorno, la aplicación las buscará en un archivo *.env* en el directorio de trabajo, o bien, usará las que esten configuradas en su computadora. Dichas variables son:
+   * DB_USER
+   * DB_PASS
+   * DB_NAME_DEV
+   * DB_NAME_TEST
+   * DB_NAME_PROD
 
-  * #### Eliminar
-    ```bash
-    $ ruby bin/rn delete un_cuaderno
-    ```
-    Usando este comando se eliminará la carpeta llamada 'un_cuaderno', en caso de no estar vacío se eliminan tambien sus notas, si se usa la opción --global se eliminan solo las notas de esta carpeta.
-
-  * #### Listar
-    ```bash
-    $ ruby bin/rn list
-    ```
-    Este comando lista todos los cuadernos
-
-  * #### Renombrar
-    ```bash
-    $ ruby bin/rn rename titulo_viejo titulo_nuevo
-    ```
-    Con este comando se renombra el cuaderno de nombre 'titulo_viejo' a 'titulo_nuevo'
-
-
-### Consideraciones generales a notas y cuadernos
-
-Para cada comando se verificará que los directorios y/o las notas existan, por esto de no ser asi se dará una advertencia
+### Creación de la base de datos
+Dentro del directorio de trabajo se debe ejecutar el siguiente comando para crear la base de datos
+```bash
+rails db:create
+```
+luego para correr las migraciones se necesita ejecutar
+```bash
+rails db:migrate
+```
+### Inicialización de la base de datos
+Para hacer la carga de datos a la base se debe ejecutar
+```bash
+rails db:seed
+```
