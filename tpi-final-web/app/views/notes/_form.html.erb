@@ -1,11 +1,11 @@
 <%= form_with(model: [@book, @note], local: true) do |form| %>
   <% if @note.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@note.errors.count, "error") %> prohibited this note from being saved:</h2>
+    <div class="alert alert-danger" role="alert">
+      <h4> La nota no puede ser guardada </h4>
 
       <ul>
         <% @note.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+          <li><%= error.message %></li>
         <% end %>
       </ul>
     </div>
@@ -22,6 +22,7 @@
         <div class="form-group">
           <%= form.label :content, 'Contenido' %>
           <%= form.text_area :content, class: "form-control" %>
+              
         </div>
 
         <div class="actions">
@@ -31,3 +32,8 @@
     </div>
   </div>
 <% end %>
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+<script>
+var easyMDE = new EasyMDE({element: document.getElementById('note_content')});
+</script>

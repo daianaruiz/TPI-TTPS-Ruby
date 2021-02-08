@@ -1,6 +1,15 @@
 # Additional translations at https://github.com/heartcombo/devise/wiki/I18n
 
 en:
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: "El email es obligatorio"
+            password:
+              blank: "La contraseña es obligatoria"
   devise:
     confirmations:
       confirmed: "Your email address has been successfully confirmed."
@@ -9,12 +18,12 @@ en:
     failure:
       already_authenticated: "You are already signed in."
       inactive: "Your account is not activated yet."
-      invalid: "Invalid %{authentication_keys} or password."
+      invalid: "Email o contraseña inválidos."
       locked: "Your account is locked."
       last_attempt: "You have one more attempt before your account is locked."
       not_found_in_database: "Invalid %{authentication_keys} or password."
       timeout: "Your session expired. Please sign in again to continue."
-      unauthenticated: "You need to sign in or sign up before continuing."
+      unauthenticated: "Necesita autenticarse para continuar."
       unconfirmed: "You have to confirm your email address before continuing."
     mailer:
       confirmation_instructions:
@@ -46,7 +55,7 @@ en:
       updated: "Your account has been updated successfully."
       updated_but_not_signed_in: "Your account has been updated successfully, but since your password was changed, you need to sign in again"
     sessions:
-      signed_in: "Signed in successfully."
+      signed_in: "Ha iniciado sesión correctamente."
       signed_out: "Signed out successfully."
       already_signed_out: "Signed out successfully."
     unlocks:

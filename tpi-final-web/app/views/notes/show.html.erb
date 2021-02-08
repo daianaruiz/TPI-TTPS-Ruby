@@ -13,6 +13,6 @@
 </div>
 
 <hr>
-<%= sanitize CommonMarker.render_html(@note.content) %>
+<%= link_to 'Convertir nota',convert_book_note_path(@book, @note), class: "ml-3 text-light btn btn-info" %>
 <%= link_to 'Editar nota', edit_book_note_path(@book, @note), class: "ml-3 text-light btn btn-info" %> <br>
 <%= link_to 'Volver', book_notes_path(@book), class: "ml-3 mt-3 text-light btn btn-secondary" %>

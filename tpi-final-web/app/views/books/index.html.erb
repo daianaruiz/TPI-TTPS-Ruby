@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <h1 class="text-center text-secondary">Mis cuadernos</h1>
 <hr>
 
@@ -14,9 +12,9 @@
         <i class="fas fa-folder icon-style"></i> <br>
         <%= link_to book.title, book_notes_url(book), class: "btn btn-link" %> <br>
         <% if book.is_global %>
-          <%= link_to 'Eliminar notas', book, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger text-white" %> <br>
+          <%= link_to 'Eliminar notas', book, method: :delete, data: { confirm: 'Se eliminarán todas las notas de Global' }, class: "btn btn-danger text-white" %> <br>
         <% else %>
-          <%= link_to 'Eliminar', book, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger text-white" %> <br>
+          <%= link_to 'Eliminar', book, method: :delete, data: { confirm: "Se eliminará #{book.title} junto con todas sus notas" }, class: "btn btn-danger text-white" %> <br>
         <% end %>
       </div>
     <% end %>

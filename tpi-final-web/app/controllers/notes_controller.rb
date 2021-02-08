@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
   before_action :find_book
-  before_action :set_note, only: %i[ show edit update destroy ]
+  before_action :set_note, only: %i[ show edit update destroy convert]
   before_action :authenticate_user!
 
   # GET /notes or /notes.json
@@ -55,15 +55,16 @@ class NotesController < ApplicationController
   end
 
   def convert
-    
+    @converted_note = CommonMarker.render_html(@note.content)
   end
 
-  def find_book
-    @book = Book.find(params[:book_id])
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def find_book
+      @book = Book.find(params[:book_id])
+    end
+  
     def set_note
       @note = @book.notes.find(params[:id])
     end
