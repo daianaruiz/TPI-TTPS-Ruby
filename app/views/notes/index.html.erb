@@ -16,6 +16,12 @@
       <i class="fas fa-plus icon-style"></i> <br>
       <%= link_to 'Crear nota', new_book_note_url, class: "btn btn-link" %>
     </div>
+    <% if @book.notes.any? %>
+      <div class="col-md-3 text-center mb-4 flex-props">
+        <i class="fas fa-exchange-alt icon-style"></i> <br>
+        <%= link_to 'Convertir notas', convert_book_notes_book_path(@book), class: "btn btn-link" %>
+      </div>
+    <% end %>
     <% @notes.each do |note| %>
       <div class="col-md-3 text-center mb-4 flex-props">
         <i class="fas fa-sticky-note icon-style"></i> <br>

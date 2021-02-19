@@ -7,6 +7,10 @@
       <i class="fas fa-plus icon-style"></i> <br>
       <%= link_to 'Crear cuaderno', new_book_path, class: "btn btn-link" %>
     </div>
+    <div class="col-md-3 text-center mb-4 flex-props">
+      <i class="fas fa-exchange-alt icon-style"></i> <br>
+      <%= link_to 'Convertir todas las notas', convert_user_notes_books_path, class: "btn btn-link" %>
+    </div>
     <% @books.each do |book| %>
       <div class="col-md-3 text-center mb-4 flex-props">
         <i class="fas fa-folder icon-style"></i> <br>

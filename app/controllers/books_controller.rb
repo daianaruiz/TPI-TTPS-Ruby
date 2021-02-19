@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: %i[ show edit update destroy ]
   before_action :authenticate_user!
+  before_action :set_book, only: %i[ show edit update destroy convert_book_notes]
 
   # GET /books or /books.json
   def index
@@ -45,6 +45,25 @@ class BooksController < ApplicationController
     else
       @book.destroy
       redirect_to books_url, notice: "El cuaderno se borró correctamente"
+    end
+  end
+
+  def convert_book_notes
+    @converted_notes = []
+    @book.notes.each do |note|
+      @converted_notes << CommonMarker.render_html("# __#{note.title}__ \n" + note.content)
+    end
+  end
+  
+  def convert_user_notes
+    @converted_notes = []
+    current_user.books.each do |book|
+      if book.notes.any?
+        @converted_notes << CommonMarker.render_html("# __#{book.title}__")
+        book.notes.each do |note|
+          @converted_notes << CommonMarker.render_html("# __#{note.title}__ \n" + note.content)
+        end
+      end
     end
   end
 
