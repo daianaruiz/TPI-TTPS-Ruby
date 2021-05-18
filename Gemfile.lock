@@ -77,8 +77,6 @@ GEM
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
     childprocess (3.0.0)
-    ckeditor (5.1.0)
-      orm_adapter (~> 0.5.0)
     commonmarker (0.21.1)
       ruby-enum (~> 0.5)
     concurrent-ruby (1.1.8)
@@ -112,13 +110,15 @@ GEM
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     method_source (1.0.0)
-    mimemagic (0.3.5)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_mime (1.0.2)
     mini_portile2 (2.5.0)
     minitest (5.14.3)
-    msgpack (1.4.1)
+    msgpack (1.4.2)
     mysql2 (0.5.3)
-    nio4r (2.5.4)
+    nio4r (2.5.7)
     nokogiri (1.11.1)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
@@ -126,7 +126,7 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     public_suffix (4.0.6)
-    puma (5.2.0)
+    puma (5.3.1)
       nio4r (~> 2.0)
     pundit (2.1.0)
       activesupport (>= 3.0.0)
@@ -235,14 +235,13 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
-  ckeditor
   commonmarker
   devise
   dotenv-rails (~> 2.7, >= 2.7.6)
   jbuilder (~> 2.7)
   listen (~> 3.3)
   mysql2 (~> 0.5.3)
-  puma (~> 5.0)
+  puma (~> 5.3)
   pundit
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.1)
